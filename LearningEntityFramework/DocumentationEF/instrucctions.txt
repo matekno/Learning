@@ -1,0 +1,1 @@
+To open the notion markdown, you just need to open the only file that's in there. It will be used as an index
