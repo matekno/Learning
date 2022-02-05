@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CRIPTOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CHAIN">
+          <Key>
+            <PropertyRef Name="ID_CHAIN" />
+          </Key>
+          <Property Name="ID_CHAIN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RPC_URL" Type="varchar" MaxLength="70" />
+          <Property Name="CHAIN_ID" Type="int" />
+          <Property Name="BLOCK_EXPLORER_URL" Type="varchar" MaxLength="70" />
+        </EntityType>
+        <EntityType Name="TOKEN">
+          <Key>
+            <PropertyRef Name="ID_TOKEN" />
+          </Key>
+          <Property Name="ID_TOKEN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_CHAIN" Type="int" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CG_TICKER" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CONTRACT_ADDRESS" Type="varchar" MaxLength="50" />
+          <Property Name="IS_NATIVE" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WALLET">
+          <Key>
+            <PropertyRef Name="ID_WALLET" />
+          </Key>
+          <Property Name="ID_WALLET" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ADDRESS" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NICKNAME" Type="varchar" MaxLength="50" />
+          <Property Name="TYPE" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WALLET_X_TOKEN">
+          <Key>
+            <PropertyRef Name="ID_WALLET_X_TOKEN" />
+          </Key>
+          <Property Name="ID_WALLET_X_TOKEN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_WALLET" Type="int" Nullable="false" />
+          <Property Name="FK_TOKEN" Type="int" Nullable="false" />
+          <Property Name="TOKEN_BALANCE" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TOKEN_CHAIN1">
+          <End Role="CHAIN" Type="Self.CHAIN" Multiplicity="0..1" />
+          <End Role="TOKEN" Type="Self.TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHAIN">
+              <PropertyRef Name="ID_CHAIN" />
+            </Principal>
+            <Dependent Role="TOKEN">
+              <PropertyRef Name="FK_CHAIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WALLET_X_TOKEN_TOKEN1">
+          <End Role="TOKEN" Type="Self.TOKEN" Multiplicity="1" />
+          <End Role="WALLET_X_TOKEN" Type="Self.WALLET_X_TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TOKEN">
+              <PropertyRef Name="ID_TOKEN" />
+            </Principal>
+            <Dependent Role="WALLET_X_TOKEN">
+              <PropertyRef Name="FK_TOKEN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WALLET_X_TOKEN_WALLET1">
+          <End Role="WALLET" Type="Self.WALLET" Multiplicity="1" />
+          <End Role="WALLET_X_TOKEN" Type="Self.WALLET_X_TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WALLET">
+              <PropertyRef Name="ID_WALLET" />
+            </Principal>
+            <Dependent Role="WALLET_X_TOKEN">
+              <PropertyRef Name="FK_WALLET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRIPTOSModelStoreContainer">
+          <EntitySet Name="CHAIN" EntityType="Self.CHAIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TOKEN" EntityType="Self.TOKEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WALLET" EntityType="Self.WALLET" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WALLET_X_TOKEN" EntityType="Self.WALLET_X_TOKEN" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TOKEN_CHAIN1" Association="Self.FK_TOKEN_CHAIN1">
+            <End Role="CHAIN" EntitySet="CHAIN" />
+            <End Role="TOKEN" EntitySet="TOKEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WALLET_X_TOKEN_TOKEN1" Association="Self.FK_WALLET_X_TOKEN_TOKEN1">
+            <End Role="TOKEN" EntitySet="TOKEN" />
+            <End Role="WALLET_X_TOKEN" EntitySet="WALLET_X_TOKEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WALLET_X_TOKEN_WALLET1" Association="Self.FK_WALLET_X_TOKEN_WALLET1">
+            <End Role="WALLET" EntitySet="WALLET" />
+            <End Role="WALLET_X_TOKEN" EntitySet="WALLET_X_TOKEN" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CRIPTOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CHAIN">
+          <Key>
+            <PropertyRef Name="ID_CHAIN" />
+          </Key>
+          <Property Name="ID_CHAIN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RPC_URL" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="CHAIN_ID" Type="Int32" />
+          <Property Name="BLOCK_EXPLORER_URL" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TOKEN" Relationship="Self.FK_TOKEN_CHAIN1" FromRole="CHAIN" ToRole="TOKEN" />
+        </EntityType>
+        <EntityType Name="TOKEN">
+          <Key>
+            <PropertyRef Name="ID_TOKEN" />
+          </Key>
+          <Property Name="ID_TOKEN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_CHAIN" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CG_TICKER" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONTRACT_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IS_NATIVE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CHAIN" Relationship="Self.FK_TOKEN_CHAIN1" FromRole="TOKEN" ToRole="CHAIN" />
+          <NavigationProperty Name="WALLET_X_TOKEN" Relationship="Self.FK_WALLET_X_TOKEN_TOKEN1" FromRole="TOKEN" ToRole="WALLET_X_TOKEN" />
+        </EntityType>
+        <EntityType Name="WALLET">
+          <Key>
+            <PropertyRef Name="ID_WALLET" />
+          </Key>
+          <Property Name="ID_WALLET" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NICKNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="WALLET_X_TOKEN" Relationship="Self.FK_WALLET_X_TOKEN_WALLET1" FromRole="WALLET" ToRole="WALLET_X_TOKEN" />
+        </EntityType>
+        <EntityType Name="WALLET_X_TOKEN">
+          <Key>
+            <PropertyRef Name="ID_WALLET_X_TOKEN" />
+          </Key>
+          <Property Name="ID_WALLET_X_TOKEN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_WALLET" Type="Int32" Nullable="false" />
+          <Property Name="FK_TOKEN" Type="Int32" Nullable="false" />
+          <Property Name="TOKEN_BALANCE" Type="Double" Nullable="false" />
+          <NavigationProperty Name="TOKEN" Relationship="Self.FK_WALLET_X_TOKEN_TOKEN1" FromRole="WALLET_X_TOKEN" ToRole="TOKEN" />
+          <NavigationProperty Name="WALLET" Relationship="Self.FK_WALLET_X_TOKEN_WALLET1" FromRole="WALLET_X_TOKEN" ToRole="WALLET" />
+        </EntityType>
+        <Association Name="FK_TOKEN_CHAIN1">
+          <End Role="CHAIN" Type="Self.CHAIN" Multiplicity="0..1" />
+          <End Role="TOKEN" Type="Self.TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHAIN">
+              <PropertyRef Name="ID_CHAIN" />
+            </Principal>
+            <Dependent Role="TOKEN">
+              <PropertyRef Name="FK_CHAIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WALLET_X_TOKEN_TOKEN1">
+          <End Role="TOKEN" Type="Self.TOKEN" Multiplicity="1" />
+          <End Role="WALLET_X_TOKEN" Type="Self.WALLET_X_TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TOKEN">
+              <PropertyRef Name="ID_TOKEN" />
+            </Principal>
+            <Dependent Role="WALLET_X_TOKEN">
+              <PropertyRef Name="FK_TOKEN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WALLET_X_TOKEN_WALLET1">
+          <End Role="WALLET" Type="Self.WALLET" Multiplicity="1" />
+          <End Role="WALLET_X_TOKEN" Type="Self.WALLET_X_TOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WALLET">
+              <PropertyRef Name="ID_WALLET" />
+            </Principal>
+            <Dependent Role="WALLET_X_TOKEN">
+              <PropertyRef Name="FK_WALLET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRIPTOSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CHAIN" EntityType="Self.CHAIN" />
+          <EntitySet Name="TOKEN" EntityType="Self.TOKEN" />
+          <EntitySet Name="WALLET" EntityType="Self.WALLET" />
+          <EntitySet Name="WALLET_X_TOKEN" EntityType="Self.WALLET_X_TOKEN" />
+          <AssociationSet Name="FK_TOKEN_CHAIN1" Association="Self.FK_TOKEN_CHAIN1">
+            <End Role="CHAIN" EntitySet="CHAIN" />
+            <End Role="TOKEN" EntitySet="TOKEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WALLET_X_TOKEN_TOKEN1" Association="Self.FK_WALLET_X_TOKEN_TOKEN1">
+            <End Role="TOKEN" EntitySet="TOKEN" />
+            <End Role="WALLET_X_TOKEN" EntitySet="WALLET_X_TOKEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WALLET_X_TOKEN_WALLET1" Association="Self.FK_WALLET_X_TOKEN_WALLET1">
+            <End Role="WALLET" EntitySet="WALLET" />
+            <End Role="WALLET_X_TOKEN" EntitySet="WALLET_X_TOKEN" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CRIPTOSModelStoreContainer" CdmEntityContainer="CRIPTOSEntities">
+          <EntitySetMapping Name="CHAIN">
+            <EntityTypeMapping TypeName="CRIPTOSModel.CHAIN">
+              <MappingFragment StoreEntitySet="CHAIN">
+                <ScalarProperty Name="ID_CHAIN" ColumnName="ID_CHAIN" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="RPC_URL" ColumnName="RPC_URL" />
+                <ScalarProperty Name="CHAIN_ID" ColumnName="CHAIN_ID" />
+                <ScalarProperty Name="BLOCK_EXPLORER_URL" ColumnName="BLOCK_EXPLORER_URL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TOKEN">
+            <EntityTypeMapping TypeName="CRIPTOSModel.TOKEN">
+              <MappingFragment StoreEntitySet="TOKEN">
+                <ScalarProperty Name="ID_TOKEN" ColumnName="ID_TOKEN" />
+                <ScalarProperty Name="FK_CHAIN" ColumnName="FK_CHAIN" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="CG_TICKER" ColumnName="CG_TICKER" />
+                <ScalarProperty Name="CONTRACT_ADDRESS" ColumnName="CONTRACT_ADDRESS" />
+                <ScalarProperty Name="IS_NATIVE" ColumnName="IS_NATIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WALLET">
+            <EntityTypeMapping TypeName="CRIPTOSModel.WALLET">
+              <MappingFragment StoreEntitySet="WALLET">
+                <ScalarProperty Name="ID_WALLET" ColumnName="ID_WALLET" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="NICKNAME" ColumnName="NICKNAME" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WALLET_X_TOKEN">
+            <EntityTypeMapping TypeName="CRIPTOSModel.WALLET_X_TOKEN">
+              <MappingFragment StoreEntitySet="WALLET_X_TOKEN">
+                <ScalarProperty Name="ID_WALLET_X_TOKEN" ColumnName="ID_WALLET_X_TOKEN" />
+                <ScalarProperty Name="FK_WALLET" ColumnName="FK_WALLET" />
+                <ScalarProperty Name="FK_TOKEN" ColumnName="FK_TOKEN" />
+                <ScalarProperty Name="TOKEN_BALANCE" ColumnName="TOKEN_BALANCE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
