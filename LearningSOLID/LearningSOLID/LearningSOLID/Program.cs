@@ -1,4 +1,6 @@
 ﻿using LearningSOLID.Liskov;
+using LearningSOLID.DependencyInversion;
+using Monitor = LearningSOLID.DependencyInversion.Monitor;
 
 #region Liskov
 
@@ -8,3 +10,7 @@ t = new S2(); // como cumple con el principio de sutitucion de liskov, podemos h
 Console.WriteLine(t.GetName());
 
 #endregion
+
+const string origin = @"D:\proyectoTrackCrictos\Learning\LearningSOLID\posts.json";
+var monitor = new Monitor(origin);
+await monitor.Show();
