@@ -1,7 +1,7 @@
 namespace LearningSOLID.DependencyInversion;
 using System.Text.Json;
 
-public class InfoByFile
+public class InfoByFile : IInfo
 {
     private string _path;
     public InfoByFile(string path)

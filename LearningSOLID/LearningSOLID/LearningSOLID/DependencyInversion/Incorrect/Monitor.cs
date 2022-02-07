@@ -11,7 +11,7 @@ public class Monitor
 
     public async Task Show()
     {
-        InfoByFile info = new InfoByFile(_origin);
+        InfoByFile info = new InfoByFile(_origin); // genera dependencia de InfoByFile
         var posts = await info.Get();
         foreach (var post in posts)
         {
